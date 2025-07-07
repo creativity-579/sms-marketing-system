@@ -1,0 +1,8 @@
+{
+  "/_app": "pages/_app.js",
+  "/_error": "pages/_error.js",
+  "/_document": "pages/_document.js",
+  "/client/ClientDashboard": "pages/client/ClientDashboard.js",
+  "/admin/HTTPVendors": "pages/admin/HTTPVendors.js",
+  "/admin": "pages/admin.js"
+}
