@@ -36,7 +36,6 @@ export default function ClientLogin() {
       };
 
       let response = await login(newClient);
-      console.log("response-->", response);
       setAuthentication(response.data.token);
 
       if (response.data.role == "admin" && response.data.token) {

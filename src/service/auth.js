@@ -1,7 +1,7 @@
 import axios, { Axios } from "axios";
 
 const authService = {
-  url: "http://localhost:4001/api",
+  url: "http://192.168.145.161:4001/api",
 
   setToken: async () => {
     const jwtToken = localStorage.getItem("jwtToken");
