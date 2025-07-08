@@ -9,6 +9,18 @@ export function useAdminHook() {
     return adminService.createClient(newClient);
   };
 
+  const updateClient = (id, updateData) => {
+    return adminService.updateClient(id, updateData);
+  };
+
+  const updateBalance = (id, newBalance) => {
+    return adminService.updateBalance(id, newBalance);
+  };
+
+  const removeClient = (id) => {
+    return adminService.removeClient(id);
+  }
+
   const getSenderIds = () => {
     return adminService.getSenderIds();
   };
@@ -36,6 +48,9 @@ export function useAdminHook() {
   return {
     getAllUsers,
     createClient,
+    updateClient,
+    updateBalance,
+    removeClient,
     getSenderIds,
     approveSenderId,
     rejectSenderId,

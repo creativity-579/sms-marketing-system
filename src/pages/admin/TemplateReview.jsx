@@ -63,12 +63,11 @@ const TemplateReview = (props) => {
       (template.name?.toLowerCase() || '')
         .includes((searchTerm?.toLowerCase() || '')
       ) ||
-      // template.clientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       template.content && template.content.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus =
       statusFilter === "all" || template.status === statusFilter;
     const matchesCategory =
-      categoryFilter === "all" || template.category === categoryFilter;
+      categoryFilter === "all" || template.type === categoryFilter;
     return matchesSearch && matchesStatus && matchesCategory;
   });
 
@@ -183,13 +182,6 @@ const TemplateReview = (props) => {
     getAllTemplates();
   }, []);
 
-  function handleCloseModal() {
-    setIsRejecting(false);
-    setReviewNote('');
-    props.DialogClose;
-    // if (props.onClose) props.onClose();
-  }
-
   return (
     <AdminLayout>
       <div className="space-y-6">
@@ -261,7 +253,7 @@ const TemplateReview = (props) => {
           <Card className="bg-gradient-to-br from-red-50 to-rose-50 border-red-200/50 shadow-lg hover:shadow-xl transition-all duration-300">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-red-700">
-                Flagged
+                Rejected
               </CardTitle>
               <Badge className="bg-gradient-to-r from-red-100 to-rose-100 text-red-700 border-red-200 shadow-sm">
                 1
@@ -319,7 +311,7 @@ const TemplateReview = (props) => {
                   <SelectItem value="all">All Status</SelectItem>
                   <SelectItem value="pending">Pending</SelectItem>
                   <SelectItem value="approved">Approved</SelectItem>
-                  <SelectItem value="flagged">Flagged</SelectItem>
+                  <SelectItem value="rejected">Rejected</SelectItem>
                   <SelectItem value="needs_revision">Needs Revision</SelectItem>
                 </SelectContent>
               </Select>
@@ -329,9 +321,9 @@ const TemplateReview = (props) => {
                 </SelectTrigger>
                 <SelectContent className="bg-white border-slate-200 shadow-xl">
                   <SelectItem value="all">All Categories</SelectItem>
-                  <SelectItem value="transactional">Transactional</SelectItem>
-                  <SelectItem value="promotional">Promotional</SelectItem>
-                  <SelectItem value="otp">OTP</SelectItem>
+                  <SelectItem value="welcome">Welcome</SelectItem>
+                  <SelectItem value="promotion">Promotion</SelectItem>
+                  <SelectItem value="reminder">Reminder</SelectItem>
                   <SelectItem value="notification">Notification</SelectItem>
                 </SelectContent>
               </Select>

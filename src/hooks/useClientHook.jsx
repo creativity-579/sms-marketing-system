@@ -65,6 +65,18 @@ export function useClientHook() {
   const deleteCampaign = (id) => {
     return clientService.deleteCampaign(id);
   };
+
+  const pauseCampaign = (id) => {
+    return clientService.pauseCampaign(id);
+  };
+
+  const resumeCampaign = (id) => {
+    return clientService.resumeCampaign(id);
+  };
+
+  const exportCampaigns = () => {
+    return clientService.exportCampaigns();
+  };
   //Queued Message
   const getMessages = () => {
     return clientService.getMessages();
@@ -107,6 +119,9 @@ export function useClientHook() {
     createCampaign,
     updateCampaign,
     deleteCampaign,
+    pauseCampaign,
+    resumeCampaign,
+    exportCampaigns,
     getMessages,
     retryMessage,
     removeMessage,

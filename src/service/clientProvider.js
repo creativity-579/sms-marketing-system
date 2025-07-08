@@ -292,6 +292,17 @@ const clientService = {
       console.log("error", error.message);
     }
   },
+
+  exportCampaigns: async () => {
+    try {
+      await authService.setToken();
+      const res = await axios.get(authService.url + "/campaigns/export", { responseType: 'blob' });
+      return res;
+    } catch (error) {
+      console.error("Error exporting campaigns:", error);
+      throw error;
+    }
+  },
 };
 
 export default clientService;

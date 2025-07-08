@@ -23,6 +23,31 @@ const adminService = {
     }
   },
 
+  updateClient: async (id, updateData) => {
+    try {
+      await adminService.setToken();
+      const res = await axios.put(
+        authService.url + "/admin/clients",
+        updateData
+      );
+      if (res.data.message !== "success") throw new error(res.data.message);
+      return res;
+    } catch (error) {
+      console.log("error", error);
+    }
+  },
+
+  removeClient: async (id) => {
+    try {
+      await adminService.setToken();
+      const res = await axios.delete(authService.url + "/admin/clients");
+      if (res.data.message !== "success") throw new error(res.data.message);
+      return res;
+    } catch (error) {
+      console.log("error", error);
+    }
+  },
+
   getSenderIds: async () => {
     try {
       await authService.setToken();
@@ -42,7 +67,6 @@ const adminService = {
         status
       );
       if (res.data.message !== "success") throw new error(res.data.message);
-      console.log("res-senderidstatus->", res);
       return res;
     } catch (error) {
       console.log("error", error.message);
@@ -68,6 +92,32 @@ const adminService = {
         updateData
       );
       if (res.data.message !== "success") throw new error(res.data.message);
+      return res;
+    } catch (error) {
+      console.log("error", error.message);
+    }
+  },
+
+  updateClient: async (id, updateData) => {
+    try {
+      await authService.setToken();
+      const res = await axios.put(
+        authService.url + `/admin/clients/${id}`,
+        updateData
+      );
+      return res;
+    } catch (error) {
+      console.log("error", error.message);
+    }
+  },
+
+  updateClientBalance: async (id, balance) => {
+    try {
+      await authService.setToken();
+      const res = await axios.put(
+        authService.url + `/admin/clients/${id}/balance`,
+        { balance }
+      );
       return res;
     } catch (error) {
       console.log("error", error.message);

@@ -114,6 +114,10 @@ export default function QueuedMessages() {
     try {
       let res = await getMessages();
       setQueuedMessages(res.data.messages);
+      toast({
+        title: 'Refreshing',
+        description: "Refreshed this page"
+      })
     } catch (error) {
       console.log("error", error.message);
     } finally {
@@ -137,7 +141,10 @@ export default function QueuedMessages() {
   const handleDelete = async (id) => {
     try {
       await removeMessage(id);
-      toast.success("Deleted message " + id);
+      toast({
+        title: "Delete Message",
+        description: "Deleted the message successfully!"
+      })
       getAllMessages();
     } catch (error) {
       console.log("error", error.message);
@@ -438,7 +445,6 @@ export default function QueuedMessages() {
                           </DialogTrigger>
                           <DialogContent className="max-w-2xl">
                             <DialogHeader>
-                              asdfas
                               <DialogTitle>Message Details</DialogTitle>
                               <DialogDescription>
                                 Complete information about this queued message
@@ -458,7 +464,7 @@ export default function QueuedMessages() {
                                   <Label className="text-sm font-medium text-gray-600">
                                     SMS Type
                                   </Label>
-                                  {/* <p>{message.smsType}</p> */}
+                                  <p>{message.type}</p>
                                 </div>
                                 <div>
                                   <Label className="text-sm font-medium text-gray-600">
@@ -468,12 +474,6 @@ export default function QueuedMessages() {
                                     {message.sender_id}
                                   </p>
                                 </div>
-                                {/* <div>
-                                  <Label className="text-sm font-medium text-gray-600">
-                                    Vendor Route
-                                  </Label>
-                                  <p>{message.vendorRoute}</p>
-                                </div> */}
                                 <div>
                                   <Label className="text-sm font-medium text-gray-600">
                                     Retry Count
@@ -534,7 +534,7 @@ export default function QueuedMessages() {
                           size="sm"
                           variant="outline"
                           className="border-orange-200 text-orange-600 hover:bg-orange-50"
-                          onClick={() => handleRetry(message.id, message)}
+                          onClick={() => handleRetry(message.id)}
                         >
                           <RotateCcw className="h-4 w-4" />
                         </Button>

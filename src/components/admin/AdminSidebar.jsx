@@ -47,31 +47,6 @@ const adminMenuItems = [
     icon: MessageSquare,
   },
   {
-    title: "Traffic & Rates",
-    url: "/admin/TrafficRates",
-    icon: BarChart3,
-  },
-  {
-    title: "Packages",
-    url: "/admin/Packages",
-    icon: Package,
-  },
-  {
-    title: "SMPP Vendors",
-    url: "/admin/SMPPVendors",
-    icon: Router,
-  },
-  {
-    title: "HTTP Vendors",
-    url: "/admin/HTTPVendors",
-    icon: MessageSquare,
-  },
-  {
-    title: "Funds Management",
-    url: "/admin/FundsManagement",
-    icon: DollarSign,
-  },
-  {
     title: "Template Review",
     url: "/admin/TemplateReview",
     icon: Filter,
@@ -80,6 +55,31 @@ const adminMenuItems = [
     title: "Campaign Management",
     url: "/admin/CampaignManagment",
     icon: Monitor,
+  },
+  // {
+  //   title: "Traffic & Rates",
+  //   url: "/admin/TrafficRates",
+  //   icon: BarChart3,
+  // },
+  {
+    title: "Packages",
+    url: "/admin/Packages",
+    icon: Package,
+  },
+  // {
+  //   title: "SMPP Vendors",
+  //   url: "/admin/SMPPVendors",
+  //   icon: Router,
+  // },
+  // {
+  //   title: "HTTP Vendors",
+  //   url: "/admin/HTTPVendors",
+  //   icon: MessageSquare,
+  // },
+  {
+    title: "Funds Management",
+    url: "/admin/FundsManagement",
+    icon: DollarSign,
   },
   {
     title: "SMS Filtering",

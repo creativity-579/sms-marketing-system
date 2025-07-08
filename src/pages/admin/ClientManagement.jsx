@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { toast } from "sonner";
 import { AdminLayout } from "../../components/layouts/AdminLayout";
 import {
@@ -23,6 +22,15 @@ import {
 } from "../../components/ui/table";
 import { Plus, Search, Edit, Trash2, DollarSign, Activity } from "lucide-react";
 import { useAdminHook } from "../../hooks/useAdminHook";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+  DialogDescription,
+} from "../../components/ui/dialog";
 
 export default function ClientManagement() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -68,7 +76,14 @@ export default function ClientManagement() {
     balance: 0,
   });
 
-  const {getAllUsers, createClient} = useAdminHook();
+  const { getAllUsers, createClient, updateClient, updateBalance } =
+    useAdminHook();
+
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showBalanceModal, setShowBalanceModal] = useState(false);
+  const [selectedClient, setSelectedClient] = useState(null);
+  const [editClient, setEditClient] = useState({});
+  const [balanceValue, setBalanceValue] = useState(0);
 
   const filteredClients = clients.filter(
     (client) =>
@@ -97,7 +112,6 @@ export default function ClientManagement() {
 
   const handleCreateClient = async () => {
     try {
-      
       let res = await createClient(newClient);
       setClients([...clients, res.data.client]);
 
@@ -125,9 +139,45 @@ export default function ClientManagement() {
     }
   };
 
+  const handleEdit = async (updatedClient) => {
+    try {
+      const res = await updateClient(updatedClient.id, updatedClient);
+      if (res && res.data && res.data.client) {
+        setClients(
+          clients.map((c) => (c.id === updatedClient.id ? res.data.client : c))
+        );
+        toast({
+          title: "Update",
+          description: "Client updated successfully!",
+        });
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
+    setShowEditModal(false);
+  };
+
+  const handleUpdateBalance = async (clientId, newBalance) => {
+    try {
+      const res = await updateBalance(clientId, newBalance);
+      if (res && res.data && res.data.client) {
+        setClients(
+          clients.map((c) => (c.id === clientId ? res.data.client : c))
+        );
+        toast({
+          title: "Update",
+          description: "Balance updated successfully!",
+        });
+      }
+    } catch (error) {
+      console.log("error", error);
+    } 
+    setShowBalanceModal(false);
+  };
+
   useEffect(() => {
     getAllClients();
-  },[])
+  }, []);
 
   return (
     <AdminLayout>
@@ -289,6 +339,11 @@ export default function ClientManagement() {
                           size="sm"
                           variant="outline"
                           className="border-blue-200 text-blue-600 hover:bg-blue-50"
+                          onClick={() => {
+                            setSelectedClient(client);
+                            setEditClient({ ...client });
+                            setShowEditModal(true);
+                          }}
                         >
                           <Edit className="h-4 w-4" />
                         </Button>
@@ -296,6 +351,11 @@ export default function ClientManagement() {
                           size="sm"
                           variant="outline"
                           className="border-green-200 text-green-600 hover:bg-green-50"
+                          onClick={() => {
+                            setSelectedClient(client);
+                            setBalanceValue(client.balance);
+                            setShowBalanceModal(true);
+                          }}
                         >
                           <DollarSign className="h-4 w-4" />
                         </Button>
@@ -408,6 +468,106 @@ export default function ClientManagement() {
             </CardContent>
           </Card>
         )}
+
+        {/* Edit Client Modal */}
+        <Dialog open={showEditModal} onOpenChange={setShowEditModal}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Edit Client</DialogTitle>
+              <DialogDescription>
+                Edit the client details below.
+              </DialogDescription>
+            </DialogHeader>
+            {editClient && (
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleEdit(editClient);
+                }}
+                className="space-y-4"
+              >
+                <Label>Name</Label>
+                <Input
+                  value={editClient.name || ""}
+                  onChange={(e) =>
+                    setEditClient({ ...editClient, name: e.target.value })
+                  }
+                />
+                <Label>Email</Label>
+                <Input
+                  value={editClient.email || ""}
+                  onChange={(e) =>
+                    setEditClient({ ...editClient, email: e.target.value })
+                  }
+                />
+                <Label>Country</Label>
+                <Input
+                  value={editClient.country ? editClient.country[0] : ""}
+                  onChange={(e) =>
+                    setEditClient({ ...editClient, country: [e.target.value] })
+                  }
+                />
+                <Label>Rate</Label>
+                <Input
+                  type="number"
+                  value={editClient.rate || 0}
+                  onChange={(e) =>
+                    setEditClient({
+                      ...editClient,
+                      rate: Number(e.target.value),
+                    })
+                  }
+                />
+                <DialogFooter>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setShowEditModal(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button type="submit">Save</Button>
+                </DialogFooter>
+              </form>
+            )}
+          </DialogContent>
+        </Dialog>
+
+        {/* Update Balance Modal */}
+        <Dialog open={showBalanceModal} onOpenChange={setShowBalanceModal}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Update Balance</DialogTitle>
+              <DialogDescription>
+                Update the client balance below.
+              </DialogDescription>
+            </DialogHeader>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleUpdateBalance(selectedClient.id, Number(balanceValue));
+              }}
+              className="space-y-4"
+            >
+              <Label>Balance</Label>
+              <Input
+                type="number"
+                value={balanceValue}
+                onChange={(e) => setBalanceValue(e.target.value)}
+              />
+              <DialogFooter>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setShowBalanceModal(false)}
+                >
+                  Cancel
+                </Button>
+                <Button type="submit">Update</Button>
+              </DialogFooter>
+            </form>
+          </DialogContent>
+        </Dialog>
       </div>
     </AdminLayout>
   );
